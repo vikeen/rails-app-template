@@ -1,0 +1,37 @@
+# Documentation References
+# https://www.saltycrane.com/blog/2019/01/how-run-postgresql-docker-mac-local-development/
+# https://rubyinrails.com/2019/03/29/dockerify-rails-6-application-setup/
+# https://gist.github.com/erdostom/5dd400cbba17d44b52b2f74b038fcb85
+#
+version: '3.7'
+services:
+  web:
+    build: .
+    command: bin/rails server -b 0.0.0.0
+    volumes:
+      - ./:/app
+      - gems:/usr/local/bundle
+      - node-modules:/app/node_modules
+    ports:
+      - '3000:3000'
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - RAILS_ENV
+    depends_on:
+      - db
+  db:
+    image: postgres:11.2-alpine
+    container_name: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+volumes:
+  gems:
+  pg-data:
+  node-modules:
