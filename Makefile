@@ -12,3 +12,6 @@ db-setup: ## setup the database
 
 db-migrate: ## run any database migrations
 	docker-compose run web rake db:migrate
+
+bundle: ## update ruby bundle within docker
+	docker-compose run web bundle
