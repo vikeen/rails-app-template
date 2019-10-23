@@ -6,8 +6,7 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN apt-get update -qq && apt-get install -y \
         build-essential \
         libpq-dev \
-        nodejs \
-        ghostscript
+        nodejs
 
 RUN mkdir -p /app
 RUN mkdir -p /usr/local/nvm
@@ -25,6 +24,7 @@ RUN echo "npm: $(npm -v)"
 # are made.
 COPY Gemfile Gemfile.lock package.json yarn.lock ./
 RUN gem install bundler
+RUN echo "bundler: $(bundler -v)"
 RUN bundle install --jobs 20 --retry 5
 
 RUN npm install -g yarn
@@ -32,6 +32,10 @@ RUN yarn install --check-files
 
 # Copy the main application.
 COPY . ./
+
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
 
 # Expose port 3000 to the Docker host, so we can access it
 # from the outside.
