@@ -15,3 +15,6 @@ db-migrate: ## run any database migrations
 
 bundle: ## update ruby bundle within docker
 	docker-compose run web bundle
+
+routes: ## list all application routes
+	docker-compose run web rails routes
