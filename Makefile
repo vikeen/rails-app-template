@@ -4,6 +4,9 @@ start: ## start the application
 stop: ## stop the application
 	docker-compose down
 
+build: ## build the docker contaienrs
+	docker-compose build
+
 test: ## run application test stack
 	docker-compose run web rake test
 
